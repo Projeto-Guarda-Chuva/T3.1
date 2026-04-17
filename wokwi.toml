@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/audio_processor.bin'
+elf = 'build/audio_processor.elf'
