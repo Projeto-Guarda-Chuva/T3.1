@@ -34,7 +34,7 @@ void minha_funcao_de_analise(const int16_t* data, size_t size) {
     // Converter int16_t para float e aplicar a janela (Windowing)
     for (int i = 0; i < N_SAMPLES; i++) {
         y_cf[i * 2] = (float)data[i] * window[i];
-        y_cf[i * 2 + 1] = 0.0f;                   
+        y_cf[i * 2 + 1] = 0.0f;              
     }
 
     // Executar a FFT complexa
