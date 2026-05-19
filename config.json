@@ -1,0 +1,23 @@
+{
+  "audio": {
+    "sample_rate": 16000,
+    "sample_with": 2,
+    "buffer_max_size_seconds": 5,
+    "stream_host": "0.0.0.0",
+    "stream_port": 9999
+  },
+  "speech_recognition": {
+    "model_path": "./models/vosk-model-small-pt-0.3",
+    "stability_window_ms": 380,
+    "word_memory_size": 10
+  },
+  "command_recognition": {
+    "available_commands": ["iniciar", "parar", "subir", "descer", "foto"],
+    "similarity_margin": 0.6,
+    "command_cooldown_ms": 1000
+  },
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 9090
+  }
+}
