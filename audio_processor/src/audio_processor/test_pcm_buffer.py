@@ -21,7 +21,6 @@ def test_read_insufficient_data():
     # Deve retornar vazio e NÃO apagar o que está lá dentro
     assert buffer.read(5) == b""
 
-    # Provando que os 2 bytes originais ainda continuam guardados
     assert buffer.read(2) == b"\x01\x02"
 
 
@@ -44,6 +43,5 @@ def test_buffer_overflow_limits_bytes():
     # Escrevemos 6 bytes (passou do limite de 4)
     buffer.write(b"\x11\x22\x33\x44\x55\x66")
 
-    # Como o limite é 4, os bytes mais antigos (\x11\x22) devem ter sido descartados
     # Restando apenas os 4 últimos enviados
     assert buffer.read(4) == b"\x33\x44\x55\x66"
