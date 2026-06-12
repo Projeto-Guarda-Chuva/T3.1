@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "audio_processor"
@@ -15,9 +15,6 @@ dependencies = [
     "pydantic>=2.0.0",
     "Levenshtein>=0.27.3"
 ]
-
-[tool.hatch.build.targets.wheel]
-packages = ["audio_processor"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

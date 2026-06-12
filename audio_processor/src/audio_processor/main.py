@@ -3,6 +3,7 @@ from audio_processor.config import AppConfig
 from audio_processor.models.vosk_speech_model import VoskSpeechModel
 from audio_processor.pcm_buffer import PcmBuffer
 from audio_processor.services.audio_processor_service import AudioProcessorService
+from audio_processor.services.ffmpeg_stream_service import FFmpegStreamService
 from audio_processor.services.gateway_service import GatewayService
 from audio_processor.services.pcm_stream_service import PcmStreamService
 
@@ -29,6 +30,8 @@ command_recognizer = CommandRecognizer(
     config.command_recognition.command_cooldown_ms,
 )
 
+ffmpeg = FFmpegStreamService(config.audio.sample_rate, config.audio.stream_port)
+
 pcm_stream = PcmStreamService(
     config.audio.stream_host,
     config.audio.stream_port,
@@ -44,6 +47,7 @@ audio_processor = AudioProcessorService(
     gateway,
 )
 
+ffmpeg.start()
 pcm_stream.start()
 gateway.start()
 audio_processor.start()
@@ -54,10 +58,12 @@ try:
 except KeyboardInterrupt:
     print("\nLoop stopped by user.")
 
-pcm_stream.stop()
-gateway.stop()
 audio_processor.stop()
+gateway.stop()
+pcm_stream.stop()
+ffmpeg.stop()
 
-pcm_stream.join()
-gateway.join()
 audio_processor.join()
+gateway.join()
+pcm_stream.join()
+ffmpeg.join()
