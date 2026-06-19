@@ -1,5 +1,4 @@
-from pcm_buffer import PcmBuffer
-
+from audio_processor.pcm_buffer import PcmBuffer
 
 def test_write_and_read_basic():
     # Configurando um buffer pequeno: 1 segundo, sample_rate de 1000Hz, 1 byte por sample = max 1000 bytes

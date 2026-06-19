@@ -2,7 +2,7 @@
 import pytest
 import time  # Certifique-se de importar o time no topo do arquivo de teste
 from unittest.mock import patch
-from command_recognizer import CommandRecognizer
+from audio_processor.command_recognizer import CommandRecognizer
 
 
 def test_recognize_success():

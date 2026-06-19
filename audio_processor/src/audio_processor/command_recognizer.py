@@ -30,6 +30,9 @@ class CommandRecognizer:
             if detection_interval < self._command_cooldown:
                 return None
 
+        # --- CORREÇÃO AQUI: Salva o momento exato em que o comando foi aceito ---
+        self._command_last_detection[command] = now
+
         return command
 
     def _get_closest_command(self, word: str) -> str | None:
