@@ -1,5 +1,6 @@
 from audio_processor.command_recognizer import CommandRecognizer
 from audio_processor.config import AppConfig
+from audio_processor.models.faster_whisper_model import FasterWhisperSpeechModel
 from audio_processor.models.vosk_speech_model import VoskSpeechModel
 from audio_processor.pcm_buffer import PcmBuffer
 from audio_processor.services.audio_processor_service import AudioProcessorService
@@ -15,11 +16,20 @@ pcm_buffer = PcmBuffer(
     config.audio.sample_with,
 )
 
-speech_model = VoskSpeechModel(
-    model_path=config.speech_recognition.model_path,
+# speech_model = VoskSpeechModel(
+#     model_path=config.speech_recognition.model_path,
+#     sample_rate=config.audio.sample_rate,
+#     stability_interval_ms=config.speech_recognition.stability_window_ms,
+#     word_memory_size=config.speech_recognition.word_memory_size,
+# )
+
+speech_model = FasterWhisperSpeechModel(
+    model_size_or_path="large-v3-turbo",
     sample_rate=config.audio.sample_rate,
     stability_interval_ms=config.speech_recognition.stability_window_ms,
     word_memory_size=config.speech_recognition.word_memory_size,
+    device="cuda",
+    language="pt",
 )
 
 # Services
