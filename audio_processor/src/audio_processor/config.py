@@ -28,12 +28,16 @@ class GatewayConfig(BaseModel):
     host: str
     port: int
 
+class HttpConfig(BaseModel):
+    host: str
+    port: int
 
 class AppConfig(BaseModel):
     audio: AudioConfig
     speech_recognition: SpeechRecognitionConfig
     command_recognition: CommandRecognitionConfig
     gateway: GatewayConfig
+    http_server: HttpConfig
 
     @classmethod
     def load_from_file(cls, filepath: str | Path) -> "AppConfig":

@@ -4,6 +4,7 @@ from audio_processor.models.vosk_speech_model import VoskSpeechModel
 from audio_processor.pcm_buffer import PcmBuffer
 from audio_processor.services.audio_processor_service import AudioProcessorService
 from audio_processor.services.gateway_service import GatewayService
+from audio_processor.services.http_server_service import HttpServerService 
 from audio_processor.services.pcm_stream_service import PcmStreamService
 
 config = AppConfig.load_from_file("config.json")
@@ -44,9 +45,19 @@ audio_processor = AudioProcessorService(
     gateway,
 )
 
+http_server = HttpServerService(           # ← NEW
+    host=config.http_server.host,          #   reads from the new config block
+    port=config.http_server.port,
+    gateway=gateway,
+    pcm_buffer=pcm_buffer,
+)
+
 pcm_stream.start()
 gateway.start()
 audio_processor.start()
+http_server.start()
+
+http_server.wait_for_ready(timeout=3.0)
 
 try:
     while True:
@@ -54,10 +65,12 @@ try:
 except KeyboardInterrupt:
     print("\nLoop stopped by user.")
 
+http_server.stop()
 pcm_stream.stop()
 gateway.stop()
 audio_processor.stop()
 
+http_server.join() 
 pcm_stream.join()
 gateway.join()
 audio_processor.join()
