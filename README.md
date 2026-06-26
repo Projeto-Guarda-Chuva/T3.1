@@ -2,7 +2,7 @@
 
 [![Status do QA Central](https://github.com/Projeto-Guarda-Chuva/.github/actions/workflows/qa-t31.yml/badge.svg)](https://github.com/Projeto-Guarda-Chuva/.github/actions)
 
-## 🔧 Configuração dos Git Hooks
+## 🔧 Configuração do Git Hooks
 
 Antes de começar a desenvolver, execute o script de configuração dos hooks do Git:
 
