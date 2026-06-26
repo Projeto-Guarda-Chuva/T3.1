@@ -1,6 +1,7 @@
 import math
 import struct
 import time
+
 from typing_extensions import override
 
 from audio_processor.command_recognizer import CommandRecognizer
@@ -55,12 +56,15 @@ class AudioProcessorService(BaseService):
 
             rms = self._calculate_rms(chunk)
 
+            if rms > 0:
+                rms = 20 * math.log(rms / 32767)
+            else:
+                rms = -100
+
             # Periodic noise level transmission to web gateway
             now = time.time()
             if (now - self._last_broadcast_time) * 1000 >= self._broadcast_interval_ms:
-                self._gateway_service.deliver(
-                    OutputMessageType.NOISE_LEVEL, rms
-                )
+                self._gateway_service.deliver(OutputMessageType.NOISE_LEVEL, rms)
                 self._last_broadcast_time = now
 
             # # Noise gate check
@@ -68,7 +72,6 @@ class AudioProcessorService(BaseService):
             # (caso o comando for dito em um tom de voz muito baixo ele não é enviado)
             # Necessario equilibrar e definir "silêncio"
             #     continue
-
 
             if self._model.feed(chunk):
                 _ = self._model.get_final_text()
