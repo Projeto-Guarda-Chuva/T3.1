@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     ffmpeg \
     build-essential \
+    ffmpeg \
+    pulseaudio \
     && rm -rf /var/lib/apt/lists/*
 
 COPY models/vosk-model-small-pt-0.3 /app/models/vosk-model-small-pt-0.3

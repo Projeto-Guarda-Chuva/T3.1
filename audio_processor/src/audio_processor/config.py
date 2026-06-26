@@ -28,12 +28,17 @@ class GatewayConfig(BaseModel):
     host: str
     port: int
 
+class NoiseDetectionConfig(BaseModel):
+    noise_threshold: float
+    noise_gate_enabled: bool
+    broadcast_interval_ms: int
 
 class AppConfig(BaseModel):
     audio: AudioConfig
     speech_recognition: SpeechRecognitionConfig
     command_recognition: CommandRecognitionConfig
     gateway: GatewayConfig
+    noise_detection: NoiseDetectionConfig
 
     @classmethod
     def load_from_file(cls, filepath: str | Path) -> "AppConfig":
