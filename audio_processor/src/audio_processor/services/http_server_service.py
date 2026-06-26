@@ -2,19 +2,14 @@
 import logging
 import threading
 from typing import Any
-
 from flask import Flask, jsonify, request
 from typing_extensions import override
 from werkzeug.serving import make_server
-
-# Re-use the project's own base class and types
 from audio_processor.output_message_type import OutputMessageType
 from audio_processor.pcm_buffer import PcmBuffer
 from audio_processor.services.base_service import BaseService
 from audio_processor.services.gateway_service import GatewayService
 
-# Silence Werkzeug's default request logger so it doesn't collide with yours.
-# Remove this line if you WANT to see HTTP access logs.
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 
@@ -34,16 +29,12 @@ class HttpServerService(BaseService):
         self._gateway = gateway
         self._pcm_buffer = pcm_buffer
 
-        # Built once; routes are registered before the server ever starts.
         self._app = Flask(__name__)
-        self._werkzeug_server = None          # set inside _run()
-        self._server_ready = threading.Event()  # lets callers wait for bind
+        self._werkzeug_server = None          
+        self._server_ready = threading.Event() 
 
         self._register_routes()
 
-    # ------------------------------------------------------------------
-    # BaseService interface
-    # ------------------------------------------------------------------
 
     @override
     def stop(self) -> None:
@@ -51,8 +42,6 @@ class HttpServerService(BaseService):
         super().stop()
 
         if self._werkzeug_server is not None:
-            # shutdown() is thread-safe — it sets an internal flag that
-            # causes serve_forever() to return after the current request.
             self._werkzeug_server.shutdown()
             print("[HttpServerService] Shutdown signal sent to Werkzeug.")
 
@@ -64,7 +53,7 @@ class HttpServerService(BaseService):
                 self._host,
                 self._port,
                 self._app,
-                threaded=False,   # ← change to True for concurrent requests
+                threaded=False,  
             )
             print(
                 f"[HttpServerService] Listening on "
@@ -74,7 +63,7 @@ class HttpServerService(BaseService):
             self._werkzeug_server.serve_forever()
         except Exception as exc:
             print(f"[HttpServerService] Fatal error: {exc}")
-            self._server_ready.set()   # unblock any waiter even on failure
+            self._server_ready.set()   
         finally:
             print("[HttpServerService] Server thread exited.")
 
@@ -86,15 +75,11 @@ class HttpServerService(BaseService):
         """
         return self._server_ready.wait(timeout)
 
-    # ------------------------------------------------------------------
-    # Route registration
-    # ------------------------------------------------------------------
 
     def _register_routes(self) -> None:
 
         app = self._app
 
-        # ── GET /health ───────────────────────────────────────────────
         @app.get("/health")
         def health():
             """
@@ -103,7 +88,6 @@ class HttpServerService(BaseService):
             """
             return jsonify({"status": "ok"}), 200
 
-        # ── GET /status ───────────────────────────────────────────────
         @app.get("/status")
         def status():
 
@@ -115,7 +99,6 @@ class HttpServerService(BaseService):
                     "running": self._gateway.is_running,
                 },
                 "pcm_buffer": {
-                    # PcmBuffer stores data in a bytearray; expose its size.
                     "buffered_bytes": len(self._pcm_buffer._buffer)
                     if hasattr(self._pcm_buffer, "_buffer") else "n/a",
                 },
@@ -125,7 +108,6 @@ class HttpServerService(BaseService):
                 },
             }), 200
 
-        # ── POST /command ─────────────────────────────────────────────
         @app.post("/command")
         def inject_command():
 
@@ -148,7 +130,6 @@ class HttpServerService(BaseService):
                 "command": command_value,
             }), 200
 
-        # ── POST /config/reload ───────────────────────────────────────
         @app.post("/config/reload")
         def reload_config():
 
@@ -159,9 +140,6 @@ class HttpServerService(BaseService):
 
             applied: dict = {}
 
-            # Example: expose the gateway's port as a readable field.
-            # Extend this block with whatever runtime-mutable fields
-            # your CommandRecognizer / other services expose as setters.
             if "log_level" in body:
                 level = str(body["log_level"]).upper()
                 logging.getLogger().setLevel(getattr(logging, level, logging.INFO))

@@ -45,8 +45,8 @@ audio_processor = AudioProcessorService(
     gateway,
 )
 
-http_server = HttpServerService(           # ← NEW
-    host=config.http_server.host,          #   reads from the new config block
+http_server = HttpServerService(           
+    host=config.http_server.host,          
     port=config.http_server.port,
     gateway=gateway,
     pcm_buffer=pcm_buffer,
