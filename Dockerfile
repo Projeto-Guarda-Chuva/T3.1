@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     portaudio19-dev \
     python3-dev \
+    ffmpeg \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
