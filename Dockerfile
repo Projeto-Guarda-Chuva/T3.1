@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     portaudio19-dev \
     python3-dev \
     build-essential \
+    ffmpeg \
+    pulseaudio \
     && rm -rf /var/lib/apt/lists/*
 
 COPY models/vosk-model-small-pt-0.3 /app/models/vosk-model-small-pt-0.3

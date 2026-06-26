@@ -45,6 +45,9 @@ audio_processor = AudioProcessorService(
     speech_model,
     command_recognizer,
     gateway,
+    noise_threshold=config.noise_detection.noise_threshold,
+    noise_gate_enabled=config.noise_detection.noise_gate_enabled,
+    broadcast_interval_ms=config.noise_detection.broadcast_interval_ms,
 )
 
 ffmpeg.start()

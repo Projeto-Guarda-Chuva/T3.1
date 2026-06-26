@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  audio-processor:
+    build: .
+    container_name: reconhecedor_voz_app
+    network_mode: "host" # Substitui o --net=host
+    devices:
+      - "/dev/snd:/dev/snd" # Dá acesso às placas de som físicas
+    volumes:
+      - /run/user/1000/pulse:/run/user/1000/pulse # Compartilha o socket do PulseAudio
+      - ./models:/app/models # Mapeia os modelos da IA
+    environment:
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native # Aponta o FFmpeg para o som do host
+      - PYTHONUNBUFFERED=1
+      - PULSE_LATENCY_MSEC=10
+    restart: always # Garante resiliência se a Jetson reiniciar

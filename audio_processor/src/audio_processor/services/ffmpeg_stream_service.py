@@ -17,6 +17,8 @@ class FFmpegStreamService(BaseService):
 
         cmd = [
             "ffmpeg",
+            "-fflags", "nobuffer",         # 1. Desativa completamente o cache interno do FFmpeg
+            "-flags", "low_delay",         # 2. Configura os codecs para operarem com o menor atraso possível
             "-f",
             "pulse",
             "-i",
@@ -34,7 +36,7 @@ class FFmpegStreamService(BaseService):
 
         try:
             process = subprocess.Popen(
-                cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                cmd, stdout=None, stderr=None
             )
         except FileNotFoundError:
             print("Error: ffmpeg is not installed or not found in system PATH.")
