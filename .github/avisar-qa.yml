@@ -1,0 +1,18 @@
+name: Avisar Hub QA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  avisar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enviar sinal para o Hub de QA
+        run: |
+          curl --fail -X POST https://api.github.com/repos/Projeto-Guarda-Chuva/.github/dispatches \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.QA_TOKEN }}" \
+          -d '{"event_type":"sinal-t31"}'
