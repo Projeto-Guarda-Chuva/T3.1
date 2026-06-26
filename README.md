@@ -1,3 +1,7 @@
+# Resultado dos testes
+
+[![Status do QA Central](https://github.com/Projeto-Guarda-Chuva/.github/actions/workflows/qa-t31.yml/badge.svg)](https://github.com/Projeto-Guarda-Chuva/.github/actions)
+
 # Processamento de Áudio e Reconhecimento de Comandos por Voz
 
 Este repositório contém um sistema de reconhecimento de voz offline de alta performance e baixa latência, projetado especificamente para rodar em dispositivos embarcados e de borda (Edge Computing), como a **Nvidia Jetson**, utilizando sistemas baseados em Linux. 
