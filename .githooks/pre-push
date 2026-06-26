@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+echo "Executando testes..."
+
+cd audio_processor
+
+PYTHONPATH=src python3 -m pytest -v
+
+echo "Testes passaram."

@@ -2,6 +2,20 @@
 
 [![Status do QA Central](https://github.com/Projeto-Guarda-Chuva/.github/actions/workflows/qa-t31.yml/badge.svg)](https://github.com/Projeto-Guarda-Chuva/.github/actions)
 
+## 🔧 Configuração dos Git Hooks
+
+Antes de começar a desenvolver, execute o script de configuração dos hooks do Git:
+
+```bash
+bash /scripts/setup-git-hooks.sh
+```
+
+Esse comando configura o Git para utilizar os hooks versionados no repositório, garantindo que verificações automáticas sejam executadas antes de operações como `git push`.
+
+Após a execução, os hooks serão carregados a partir da pasta `.githooks`.
+
+> É necessário executar esse comando apenas uma vez após clonar o repositório.
+
 # Processamento de Áudio e Reconhecimento de Comandos por Voz
 
 Este repositório contém um sistema de reconhecimento de voz offline de alta performance e baixa latência, projetado especificamente para rodar em dispositivos embarcados e de borda (Edge Computing), como a **Nvidia Jetson**, utilizando sistemas baseados em Linux. 
