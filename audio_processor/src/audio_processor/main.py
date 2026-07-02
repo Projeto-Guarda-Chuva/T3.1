@@ -38,17 +38,23 @@ pcm_stream = PcmStreamService(
     pcm_buffer,
 )
 
-gateway = GatewayService(config.gateway.host, config.gateway.port)
+gateway = GatewayService(
+    config.gateway.host,
+    config.gateway.port,
+    config.gateway.command_output_host,
+    config.gateway.command_output_port,
+)
 
 audio_processor = AudioProcessorService(
     pcm_buffer,
     speech_model,
     command_recognizer,
-    gateway,
+    gateway.deliver_command,
     noise_threshold=config.noise_detection.noise_threshold,
     noise_gate_enabled=config.noise_detection.noise_gate_enabled,
-    broadcast_interval_ms=config.noise_detection.broadcast_interval_ms,
 )
+
+gateway.set_noise_callback(audio_processor.get_rms)
 
 ffmpeg.start()
 pcm_stream.start()

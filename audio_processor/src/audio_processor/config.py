@@ -27,11 +27,15 @@ class CommandRecognitionConfig(BaseModel):
 class GatewayConfig(BaseModel):
     host: str
     port: int
+    command_output_host: str
+    command_output_port: int
+
 
 class NoiseDetectionConfig(BaseModel):
     noise_threshold: float
     noise_gate_enabled: bool
     broadcast_interval_ms: int
+
 
 class AppConfig(BaseModel):
     audio: AudioConfig

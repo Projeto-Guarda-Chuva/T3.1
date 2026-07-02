@@ -15,29 +15,22 @@ class FFmpegStreamService(BaseService):
         print(f"Starting stream to: udp://127.0.0.1:{self.stream_port}")
         print(f"Sample Rate: {self.sample_rate} Hz")
 
-        cmd = [
-            "ffmpeg",
-            "-fflags", "nobuffer",         # 1. Desativa completamente o cache interno do FFmpeg
-            "-flags", "low_delay",         # 2. Configura os codecs para operarem com o menor atraso possível
-            "-f",
-            "pulse",
-            "-i",
-            "default",
-            "-ar",
-            str(self.sample_rate),
-            "-ac",
-            "1",
-            "-c:a",
-            "pcm_s16le",
-            "-f",
-            "s16le",
-            f"udp://127.0.0.1:{self.stream_port}",
-        ]
+        cmd = f"""
+            ffmpeg
+            -loglevel quiet
+            -fflags nobuffer
+            -flags low_delay
+            -f pulse
+            -i default
+            -ar {self.sample_rate}
+            -ac 1
+            -c:a pcm_s16le
+            -f s16le
+            udp://127.0.0.1:{self.stream_port}
+        """.split()
 
         try:
-            process = subprocess.Popen(
-                cmd, stdout=None, stderr=None
-            )
+            process = subprocess.Popen(cmd, stdout=None, stderr=None)
         except FileNotFoundError:
             print("Error: ffmpeg is not installed or not found in system PATH.")
             return
