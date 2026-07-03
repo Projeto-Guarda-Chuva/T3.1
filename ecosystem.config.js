@@ -1,16 +1,14 @@
 module.exports = {
   apps: [
     {
-      name: "jetson-gateway",
-      script: "src/audio_processor/main.py", 
-      interpreter: "python3", 
-      cwd: "/app",
+      name: "audio-processor",
+      script: "python3",
+      args: "-m audio_processor.main",
+      exec_mode: "fork",
       autorestart: true,
-      watch: false, // Keep false on production/Jetson to save CPU resources
-      max_memory_restart: "1G", // Restarts the app if it leaks memory on an edge device
+      watch: false,
       env: {
-        NODE_ENV: "production",
-        PYTHONUNBUFFERED: "1", // Crucial: Forces Python to flush prints to PM2 logs immediately
+        PYTHONUNBUFFERED: "1",
       },
     },
   ],
